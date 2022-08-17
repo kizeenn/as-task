@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import IndexPage from ".";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import EventsListIndexPage from "./pages/events";
+import IndexPage from "./pages";
 import "./index.css";
 
 if (import.meta.env.DEV) {
@@ -10,6 +12,11 @@ if (import.meta.env.DEV) {
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <IndexPage />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<IndexPage />} />
+        <Route path="/events" element={<EventsListIndexPage />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
