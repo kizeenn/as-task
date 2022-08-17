@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Event } from "./mocks/handlers";
+import { Event } from "../../mocks/handlers";
 
-function IndexPage() {
+function EventsListIndexPage() {
   const [getEvents, setEvents] = useState([]);
 
   const fetchData = async () => {
@@ -51,4 +51,4 @@ function IndexPage() {
   );
 }
 
-export default IndexPage;
+export default EventsListIndexPage;
