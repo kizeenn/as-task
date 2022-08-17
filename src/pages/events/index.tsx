@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { Event } from "../../mocks/handlers";
+import { DB, Event } from "../../mocks/handlers";
 
 function EventsListIndexPage() {
-  const [getEvents, setEvents] = useState([]);
+  const [getEvents, setEvents] = useState<Event[]>([]);
 
   const fetchData = async () => {
     const response = await fetch("/api/events");
-    const data = await response.json();
+    const data: DB = await response.json();
     setEvents(data.events);
   };
 

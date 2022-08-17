@@ -12,7 +12,7 @@ export interface Event {
   id: string;
 }
 
-interface DB {
+export interface DB {
   events: Event[];
 }
 
