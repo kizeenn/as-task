@@ -1,11 +1,3 @@
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Typography,
-  Grid,
-} from "@mui/material";
 import { useEffect, useState } from "react";
 import { Event } from "./mocks/handlers";
 
@@ -23,38 +15,39 @@ function App() {
   }, []);
 
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      spacing={10}
-    >
+    <div className="flex flex-col gap-8 md:flex-row justify-between md:px-10 py-10 h-screen">
       {getEvents.map((event: Event) => (
-        <Grid item>
-          <Card sx={{ maxWidth: 500 }}>
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                height="140"
-                image={event.image}
-                alt="green iguana"
-              />
+        <div className="relative shadow-xl sm:rounded-2xl sm:overflow-hidden h-3/4">
+          <div className="absolute inset-0">
+            <img
+              className="h-full w-full object-cover"
+              src={event.image}
+              alt="People working on laptops"
+            />
+            <div className="absolute inset-0 bg-gray-500 mix-blend-multiply" />
+          </div>
 
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {event.title}
-                </Typography>
+          <div className="relative flex flex-col p-5 h-full justify-center">
+            <h1 className="text-center text-4xl font-bold tracking-tight sm:text-5xl sm:tracking-tight lg:text-6xl lg:tracking-tight">
+              <span className="block text-white">{event.title}</span>
+            </h1>
 
-                <Typography variant="body2" color="text.secondary">
-                  {event.description}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
+            <p className="mt-6 max-w-lg mx-auto text-center text-xl text-gray-300 sm:max-w-3xl">
+              {event.description}
+            </p>
+
+            <div className="mt-10 max-w-sm mx-auto sm:max-w-none sm:flex sm:justify-center">
+              <a
+                href={`/events/${event.id}`}
+                className="flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-indigo-50 sm:px-8"
+              >
+                Go to event
+              </a>
+            </div>
+          </div>
+        </div>
       ))}
-    </Grid>
+    </div>
   );
 }
 
