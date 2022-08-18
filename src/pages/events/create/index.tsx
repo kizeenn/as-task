@@ -1,4 +1,5 @@
-import { Field, Form, Formik, FormikProps } from "formik";
+import { Field, Form, Formik } from "formik";
+import * as Yup from "yup";
 
 type TextType = "text" | "datetime-local" | "file" | "email";
 
@@ -7,7 +8,39 @@ interface FieldFormProps {
   label: string;
   value: string;
   name: string;
+  error?: string;
+  touched?: boolean;
 }
+
+interface CategoryRadioInputsProps {
+  error?: string;
+  touched?: boolean;
+}
+
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
+const EventSchema = Yup.object().shape({
+  title: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  category: Yup.string().required("Category is required"),
+  date: Yup.date()
+    .required("Required")
+    .min(new Date(), "Event must be in the future"),
+  description: Yup.string()
+    .min(2, "Too Short!")
+    .max(250, "Too Long!")
+    .required("Required"),
+  image: Yup.mixed().test("fileSize", "File Size is too large", (value) => {
+    if (!value) return true;
+    return value.size;
+  }),
+  place: Yup.string().min(2, "Too Short!").max(50, "Too Long!"),
+  phoneNumber: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
+  email: Yup.string().required("Required").email("Invalid email"),
+});
 
 function FieldForm(props: FieldFormProps) {
   return (
@@ -18,6 +51,10 @@ function FieldForm(props: FieldFormProps) {
       >
         {props.label}
       </label>
+
+      {props.error && props.touched ? (
+        <div className="text-xs font-bold text-red-600">{props.error}</div>
+      ) : null}
 
       <Field
         accept={props.type === "file" ? "image/png, image/jpeg" : undefined}
@@ -35,10 +72,15 @@ const categories = [
   { value: "health", title: "Health", name: "category" },
 ];
 
-function CategoryRadioInputs() {
+function CategoryRadioInputs(props: CategoryRadioInputsProps) {
   return (
     <div className="-mt-6">
       <label className="text-xs font-medium text-gray-900">Category</label>
+
+      {props.error && props.touched ? (
+        <div className="text-xs font-bold text-red-600">{props.error}</div>
+      ) : null}
+
       <fieldset className="mt-4">
         <div className="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-10">
           {categories.map((category) => (
@@ -78,6 +120,7 @@ function CreateEventIndexPage() {
         email: "",
         id: crypto.randomUUID(),
       }}
+      validationSchema={EventSchema}
       onSubmit={(values) => {
         fetch("http://localhost:3000/api/events", {
           method: "post",
@@ -88,7 +131,7 @@ function CreateEventIndexPage() {
         });
       }}
     >
-      {() => (
+      {({ errors, touched }) => (
         <div className="max-w-xl mx-auto p-5">
           <div>
             <h3 className="text-lg leading-6 font-medium text-gray-900">
@@ -105,15 +148,22 @@ function CreateEventIndexPage() {
               name="title"
               label="Event title"
               value="title"
+              error={errors.title}
+              touched={touched.title}
             />
 
-            <CategoryRadioInputs />
+            <CategoryRadioInputs
+              error={errors.category}
+              touched={touched.category}
+            />
 
             <FieldForm
               type="datetime-local"
               name="date"
               label="Event date"
               value="date"
+              error={errors.date}
+              touched={touched.date}
             />
 
             <div className="relative border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600">
@@ -123,6 +173,12 @@ function CreateEventIndexPage() {
               >
                 Event Description
               </label>
+
+              {errors.description && touched.description ? (
+                <div className="text-xs font-bold text-red-600">
+                  {errors.description}
+                </div>
+              ) : null}
 
               <Field
                 className="block w-full border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm"
@@ -136,6 +192,8 @@ function CreateEventIndexPage() {
               name="image"
               label="Event image"
               value="image"
+              error={errors.image}
+              touched={touched.image}
             />
 
             <FieldForm
@@ -143,6 +201,8 @@ function CreateEventIndexPage() {
               name="place"
               label="Event place"
               value="place"
+              error={errors.place}
+              touched={touched.place}
             />
 
             <FieldForm
@@ -150,6 +210,8 @@ function CreateEventIndexPage() {
               name="phoneNumber"
               label="Contact phone number"
               value="phoneNumber"
+              error={errors.phoneNumber}
+              touched={touched.phoneNumber}
             />
 
             <FieldForm
@@ -157,6 +219,8 @@ function CreateEventIndexPage() {
               name="email"
               label="Contact email"
               value="email"
+              error={errors.email}
+              touched={touched.email}
             />
 
             <div className="flex justify-end">
