@@ -1,6 +1,6 @@
 import { Field, Form, Formik, FormikProps } from "formik";
 
-type TextType = "text" | "datetime-local" | "file";
+type TextType = "text" | "datetime-local" | "file" | "email";
 
 interface FieldFormProps {
   type: TextType;
@@ -75,6 +75,7 @@ function CreateEventIndexPage() {
         phoneNumber: "",
         place: "",
         image: "",
+        email: "",
         id: crypto.randomUUID(),
       }}
       onSubmit={(values) => {
@@ -88,7 +89,7 @@ function CreateEventIndexPage() {
       }}
     >
       {() => (
-        <div className="max-w-xl mx-auto mt-8">
+        <div className="max-w-xl mx-auto p-5">
           <div>
             <h3 className="text-lg leading-6 font-medium text-gray-900">
               Event
@@ -147,8 +148,15 @@ function CreateEventIndexPage() {
             <FieldForm
               type="text"
               name="phoneNumber"
-              label="Event phone number"
+              label="Contact phone number"
               value="phoneNumber"
+            />
+
+            <FieldForm
+              type="email"
+              name="email"
+              label="Contact email"
+              value="email"
             />
 
             <div className="flex justify-end">
