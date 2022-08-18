@@ -51,4 +51,11 @@ export const handlers = [
   rest.get("/api/events", (req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ events: db.events }));
   }),
+
+  rest.post("/api/events", async (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({ events: db.events.push(await req.json()) })
+    );
+  }),
 ];
