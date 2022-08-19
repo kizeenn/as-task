@@ -1,5 +1,6 @@
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, FormikErrors, FormikTouched } from "formik";
 import * as Yup from "yup";
+import { postEvent } from "../../../api/resources/events";
 
 type TextType = "text" | "datetime-local" | "file" | "email";
 
@@ -8,8 +9,8 @@ interface FieldFormProps {
   label: string;
   value: string;
   name: string;
-  error?: string;
-  touched?: boolean;
+  error?: FormikErrors<Date> | FormikErrors<String> | FormikErrors<File>;
+  touched?: FormikTouched<Date> | FormikTouched<String> | FormikTouched<File>;
 }
 
 interface CategoryRadioInputsProps {
@@ -33,10 +34,7 @@ const EventSchema = Yup.object().shape({
     .min(2, "Too Short!")
     .max(250, "Too Long!")
     .required("Required"),
-  image: Yup.mixed().test("fileSize", "File Size is too large", (value) => {
-    if (!value) return true;
-    return value.size;
-  }),
+  image: Yup.mixed().required("Required"),
   place: Yup.string().min(2, "Too Short!").max(50, "Too Long!"),
   phoneNumber: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
   email: Yup.string().required("Required").email("Invalid email"),
@@ -112,7 +110,7 @@ function CreateEventIndexPage() {
       initialValues={{
         title: "",
         description: "",
-        date: "",
+        date: new Date(),
         category: "",
         phoneNumber: "",
         place: "",
@@ -122,13 +120,7 @@ function CreateEventIndexPage() {
       }}
       validationSchema={EventSchema}
       onSubmit={(values, { resetForm }) => {
-        fetch("http://localhost:3000/api/events", {
-          method: "post",
-          body: JSON.stringify(values),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        });
+        postEvent(values);
         resetForm();
       }}
     >

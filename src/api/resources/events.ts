@@ -19,3 +19,13 @@ export async function getEvent(id: string): Promise<Event> {
   const response = await fetch(`https://api.server.test/events/${id}`);
   return response.json();
 }
+
+export async function postEvent(event: Event) {
+  await fetch("https://api.server.test/events", {
+    method: "post",
+    body: JSON.stringify(event),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  });
+}
