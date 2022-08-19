@@ -52,8 +52,8 @@ function RadioField(props: {
 }) {
   return (
     <fieldset className="-mt-6">
-      <legend className="text-xs font-medium text-gray-900">
-        {props.name}
+      <legend className="text-xs font-medium text-gray-900 mb-2">
+        {props.label}
       </legend>
 
       <ErrorMessage
@@ -64,7 +64,7 @@ function RadioField(props: {
 
       <div className="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-10">
         {props.options.map((option) => (
-          <label key={option.label} className="flex items-center">
+          <label key={option.label} className="flex items-center gap-3">
             <span className="ml-3 block text-sm font-medium text-gray-700">
               {option.label}
             </span>
@@ -153,7 +153,11 @@ const EventCreateForm = () => {
         <Form className="mt-6 sm:mt-5 flex flex-col gap-10">
           <TextInput type="text" name="title" label="Event title" />
 
-          <RadioField label="Category" name="category" options={categories} />
+          <RadioField
+            label="Event Category"
+            name="category"
+            options={categories}
+          />
 
           <TextInput name="date" label="Event date" type="datetime-local" />
 
