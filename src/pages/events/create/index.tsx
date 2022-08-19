@@ -121,7 +121,7 @@ function CreateEventIndexPage() {
         id: crypto.randomUUID(),
       }}
       validationSchema={EventSchema}
-      onSubmit={(values) => {
+      onSubmit={(values, { resetForm }) => {
         fetch("http://localhost:3000/api/events", {
           method: "post",
           body: JSON.stringify(values),
@@ -129,6 +129,7 @@ function CreateEventIndexPage() {
             "Content-type": "application/json; charset=UTF-8",
           },
         });
+        resetForm();
       }}
     >
       {({ errors, touched }) => (
