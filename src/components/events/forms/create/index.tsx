@@ -10,6 +10,11 @@ interface FieldFormProps {
   label: string;
   name: string;
 }
+interface ImageInputProps {
+  label: string;
+  name: string;
+  onChange: (event: any) => void;
+}
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -97,6 +102,28 @@ function FieldForm(props: FieldFormProps) {
     </label>
   );
 }
+function ImageInput(props: ImageInputProps) {
+  return (
+    <label className="relative border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600">
+      <span className="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900">
+        {props.label}
+      </span>
+
+      <ErrorMessage
+        className="text-xs font-bold text-red-600"
+        component="div"
+        name={props.name}
+      />
+
+      <input
+        onChange={props.onChange}
+        className="block w-full border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm"
+        type="file"
+        name={props.name}
+      />
+    </label>
+  );
+}
 
 const EventCreateForm = () => {
   const navigate = useNavigate();
@@ -150,6 +177,16 @@ const EventCreateForm = () => {
           </div>
 
           <FieldForm type="text" name="place" label="Event place" />
+
+          <ImageInput
+            onChange={(event) => {
+              const file = event.currentTarget.files?.[0];
+              if (!file) return;
+              setFieldValue("image", URL.createObjectURL(file));
+            }}
+            name="image"
+            label="Event Image"
+          />
 
           <FieldForm
             type="text"
