@@ -10,7 +10,7 @@ function EventsListIndexPage() {
       {data?.map((event) => (
         <div
           key={event.id}
-          className="relative shadow-xl sm:rounded-2xl sm:overflow-hidden h-3/4"
+          className="relative shadow-xl sm:rounded-2xl sm:overflow-hidden h-3/4 w-1/2"
         >
           <div className="absolute inset-0">
             <img
