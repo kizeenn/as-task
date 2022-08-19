@@ -11,7 +11,7 @@ function EventsListIndexPage() {
         {data?.map((event) => (
           <div
             key={event.id}
-            className="relative shadow-xl sm:rounded-2xl sm:overflow-hidden h-full md:h-96 w-full md:w-1/2"
+            className="relative shadow-xl sm:rounded-2xl sm:overflow-hidden h-full md:h-96 w-full md:w-1/2 "
           >
             <div className="absolute inset-0">
               <img
@@ -22,7 +22,7 @@ function EventsListIndexPage() {
               <div className="absolute inset-0 bg-gray-500 mix-blend-multiply" />
             </div>
 
-            <div className="relative flex flex-col p-5 h-full justify-center">
+            <div className="relative flex flex-col p-5 h-full justify-between">
               <h1 className="text-center text-4xl font-bold tracking-tight sm:text-5xl sm:tracking-tight lg:text-6xl lg:tracking-tight">
                 <span className="block text-white">{event.title}</span>
               </h1>
