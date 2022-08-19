@@ -1,11 +1,12 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import { createEvent, Event } from "../../../../api/resources/events";
 import * as Yup from "yup";
 
-type TextType = "text" | "datetime-local" | "file" | "email";
+type TextType = "text" | "datetime-local" | "file" | "email" | "textarea";
 
 interface FieldFormProps {
+  as?: string | React.ComponentType<FieldProps["field"]>;
   type: TextType;
   label: string;
   name: string;
@@ -81,7 +82,7 @@ function RadioField(props: {
   );
 }
 
-function FieldForm(props: FieldFormProps) {
+function TextInput(props: FieldFormProps) {
   return (
     <label className="relative border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600">
       <span className="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900">
@@ -95,6 +96,7 @@ function FieldForm(props: FieldFormProps) {
       />
 
       <Field
+        as={props.as ? props.as : undefined}
         className="block w-full border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm"
         type={props.type}
         name={props.name}
@@ -147,36 +149,22 @@ const EventCreateForm = () => {
         navigate(`/events/${event.id}`);
       }}
     >
-      {({ values, errors, touched, setFieldValue }) => (
+      {({ setFieldValue }) => (
         <Form className="mt-6 sm:mt-5 flex flex-col gap-10">
-          <FieldForm type="text" name="title" label="Event title" />
+          <TextInput type="text" name="title" label="Event title" />
 
           <RadioField label="Category" name="category" options={categories} />
 
-          <FieldForm name="date" label="Event date" type="datetime-local" />
+          <TextInput name="date" label="Event date" type="datetime-local" />
 
-          <div className="relative border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600">
-            <label
-              htmlFor="description"
-              className="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900"
-            >
-              Event Description
-            </label>
+          <TextInput
+            as="textarea"
+            type="textarea"
+            name="description"
+            label="Event description"
+          />
 
-            {errors.description && touched.description ? (
-              <div className="text-xs font-bold text-red-600">
-                {errors.description}
-              </div>
-            ) : null}
-
-            <Field
-              className="block w-full border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm"
-              as="textarea"
-              name="description"
-            />
-          </div>
-
-          <FieldForm type="text" name="place" label="Event place" />
+          <TextInput type="text" name="place" label="Event place" />
 
           <ImageInput
             onChange={(event) => {
@@ -188,13 +176,13 @@ const EventCreateForm = () => {
             label="Event Image"
           />
 
-          <FieldForm
+          <TextInput
             type="text"
             name="phoneNumber"
             label="Contact phone number"
           />
 
-          <FieldForm type="email" name="email" label="Contact email" />
+          <TextInput type="email" name="email" label="Contact email" />
 
           <div className="flex justify-between">
             <Link
