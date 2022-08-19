@@ -4,5 +4,3 @@ db.events.create();
 db.events.create();
 
 export const handlers = [...db.events.toHandlers("rest", "https://api.server.test")];
-
-console.log(handlers);

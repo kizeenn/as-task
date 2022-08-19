@@ -1,23 +1,17 @@
-import { useEffect, useState } from "react";
-import { DB, Event } from "../../mocks/handlers";
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
+import { getEvents } from "../../api/resources/events";
 
 function EventsListIndexPage() {
-  const [getEvents, setEvents] = useState<Event[]>([]);
-
-  const fetchData = async () => {
-    const response = await fetch("/api/events");
-    const data: DB = await response.json();
-    setEvents(data.events);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const { data } = useQuery(["events"], getEvents);
 
   return (
     <div className="flex flex-col gap-8 md:flex-row justify-between md:px-10 py-10 h-screen">
-      {getEvents.map((event: Event) => (
-        <div className="relative shadow-xl sm:rounded-2xl sm:overflow-hidden h-3/4">
+      {data?.map((event) => (
+        <div
+          key={event.id}
+          className="relative shadow-xl sm:rounded-2xl sm:overflow-hidden h-3/4"
+        >
           <div className="absolute inset-0">
             <img
               className="h-full w-full object-cover"
@@ -37,12 +31,12 @@ function EventsListIndexPage() {
             </p>
 
             <div className="mt-10 max-w-sm mx-auto sm:max-w-none sm:flex sm:justify-center">
-              <a
-                href={`/events/${event.id}`}
+              <Link
+                to={`/events/${event.id}`}
                 className="flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-indigo-50 sm:px-8"
               >
                 Go to event
-              </a>
+              </Link>
             </div>
           </div>
         </div>
