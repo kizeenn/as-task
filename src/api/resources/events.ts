@@ -4,7 +4,7 @@ export interface Event {
   description: string;
   image: string;
   category: "sport" | "culture" | "health";
-  phoneNumber: number;
+  phoneNumber: string;
   email: string;
   place: string;
   id: string;
@@ -20,12 +20,13 @@ export async function getEvent(id: string): Promise<Event> {
   return response.json();
 }
 
-export async function postEvent(event: Event) {
-  await fetch("https://api.server.test/events", {
-    method: "post",
+export async function createEvent(event: Event): Promise<Event> {
+  const response = await fetch("https://api.server.test/events", {
+    method: "POST",
     body: JSON.stringify(event),
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
   });
+  return response.json();
 }

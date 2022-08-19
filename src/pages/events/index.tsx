@@ -28,7 +28,7 @@ function EventsListIndexPage() {
                   <img
                     className="h-full w-full object-cover"
                     src={event.image}
-                    alt="People working on laptops"
+                    alt="Event image"
                   />
                   <div className="absolute inset-0 bg-gray-500 mix-blend-multiply" />
                 </div>
