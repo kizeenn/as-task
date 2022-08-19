@@ -7,11 +7,11 @@ function EventsListIndexPage() {
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-col gap-8 md:flex-row justify-between md:px-10 py-10 h-screen">
+      <div className="flex flex-col gap-8 md:flex-row justify-between md:px-10 py-10 h-full">
         {data?.map((event) => (
           <div
             key={event.id}
-            className="relative shadow-xl sm:rounded-2xl sm:overflow-hidden h-3/4 w-1/2"
+            className="relative shadow-xl sm:rounded-2xl sm:overflow-hidden h-full md:h-96 w-full md:w-1/2"
           >
             <div className="absolute inset-0">
               <img
@@ -42,6 +42,15 @@ function EventsListIndexPage() {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="max-w-sm mx-auto sm:max-w-none sm:flex sm:justify-center py-5">
+        <Link
+          to="/events/create"
+          className="flex items-center justify-center px-4 py-3 border border-gray-400 text-base font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-indigo-50 sm:px-8"
+        >
+          Create new event
+        </Link>
       </div>
     </div>
   );
