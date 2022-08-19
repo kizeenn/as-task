@@ -10,7 +10,8 @@ interface FieldFormProps {
   label: string;
   value: string;
   name: string;
-  error?: FormikErrors<Date> | FormikErrors<String> | FormikErrors<File>;
+  // type any beacuse type "FormikErrors<Date> | FormikErrors<String> | FormikErrors<File>" as I wanted to use is giving error (can't fix).
+  error?: any;
   touched?: FormikTouched<Date> | FormikTouched<String> | FormikTouched<File>;
 }
 
@@ -121,6 +122,7 @@ function CreateEventIndexPage() {
       }}
       validationSchema={EventSchema}
       onSubmit={(values, { resetForm }) => {
+        //@ts-ignore
         postEvent(values);
         resetForm();
       }}
